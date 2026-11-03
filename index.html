@@ -309,7 +309,7 @@ setInterval(()=>{ mustangHeroIndex = (mustangHeroIndex + 1) % mustangHeroSlides.
   const submit=form.querySelector('button[type="submit"]');
   const fields=new FormData(form);
   const payload=Object.fromEntries(fields.entries());
-  payload.consent=fields.get('consent')==='on'; payload.sourcePage=location.pathname+location.hash;
+  payload.consent=fields.get('consent')==='on'; payload.sourcePage=location.pathname+location.hash; payload.lassoGuid=(window.LassoAnalytics&&LassoAnalytics.guid)||(document.cookie.match(/(?:^|; )_ldstut=([^;]+)/)||[])[1]||'';
   const hasContact=Boolean(String(payload.phone||'').trim()||String(payload.email||'').trim());
   if(!hasContact){ status.textContent='Enter a phone number or email address so Mustang Creek Homes can contact you.'; (form.elements.phone||form.elements.email)?.focus(); return; }
   status.textContent='Sending your request…'; submit.disabled=true;
@@ -369,7 +369,7 @@ setInterval(()=>{ mustangHeroIndex = (mustangHeroIndex + 1) % mustangHeroSlides.
 <script>
 (() => { const logo=document.querySelector('img.logo')?.src, watermark=document.querySelector('.map-logo-watermark'); if(logo&&watermark) watermark.style.backgroundImage=`url("${logo}")`; })();
 </script>
-\n<script>
+<script>
 (() => {
   const estimate=document.querySelector('#estimate'); if(!estimate)return;
   const checks=[...estimate.querySelectorAll('.check[data-item]')], home=document.getElementById('siteHomeNeed'), landStatus=document.getElementById('siteLandStatus'), homeStatus=document.getElementById('siteHomePickStatus');
@@ -390,4 +390,11 @@ setInterval(()=>{ mustangHeroIndex = (mustangHeroIndex + 1) % mustangHeroSlides.
   cta.addEventListener('click',()=>{const items=selected().map(x=>x.dataset.item), homes=selectedHomes();const form=document.getElementById('lassoLeadForm'), interest=form?.querySelector('[name="interest"]'), message=form?.querySelector('[name="message"]'), landLocation=form?.querySelector('[name="landLocation"]');if(interest)interest.value='Price My Land & Site Package';if(landLocation)landLocation.value=landStatus.value==='I need help finding land'?'Need help finding land':'';if(message){const lines=['Your Move In Plan:',...(homes.length?['Homes I’m Considering:',...homes.map(x=>`- ${x.dataset.homeTitle}${x.dataset.homeSpec?' — '+x.dataset.homeSpec:''}`)]:[]),...details().map(x=>`${x.label}: ${x.value}`),...(items.length?[`Site package items requested: ${items.join(', ')}.`]:[])];const scope=lines.join('\n');const original=message.dataset.scopeOriginal??message.value.trim();message.dataset.scopeOriginal=original;message.value=original?`${original}\n\n${scope}`:scope;}document.getElementById('contact')?.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>form?.querySelector('[name="firstName"]')?.focus(),450);});
   render();
 })();
-</script>\n</body></html>
+</script>
+<script type="text/javascript">
+window.LassoAnalyticsAPI = 2;
+(function(t,r,a,c,k,e,d){t.LassoAnalyticsObject=k;t[k]=t[k]||function(){(t[k].q=t[k].q||[]).push(arguments);return t[k]},e=r.createElement(a),e.async=1;e.src=c;d=r.getElementsByTagName(a)[0];d.parentNode.insertBefore(e,d)})
+(window,document,'script','https://platform.lassocrm.com/wt/analytics.min.js','LassoAnalytics');
+LassoAnalytics('setAccountId', 'LAS-759074-02')('pageView')('patchRegistrationForms');
+</script>
+</body></html>
